@@ -3,9 +3,9 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.allaymc.myplugin"
-description = "My plugin"
-version = "1.0.0"
+group = "cn.mcayear.magicitem"
+description = "Want to make items magical?!"
+version = "0.0.1"
 
 java {
     toolchain {
@@ -26,4 +26,8 @@ dependencies {
     compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.34")
 
     annotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.34")
+}
+
+tasks.shadowJar {
+    archiveClassifier = "shaded"
 }
