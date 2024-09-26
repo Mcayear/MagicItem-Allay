@@ -1,0 +1,15 @@
+{
+  "magicitem.usage.permission": "§cPermission denied.",
+  "magicitem.usage.cooldown": "§7[§fMagicItem§7] §aCooling down...§e {%1}§a seconds remaining",
+  "magicitem.usage.showItem.cooldown": "§7[§fItemDisplay§7] §aCooling down...§e {%1}§a seconds remaining",
+  "magicitem.usage.showItem": "§7[§fItemDisplay§7] §6Player§a {%1} §6is holding§r {%2}",
+  "magicitem.usage.restrictedWorld": "§7[§fMagicItem§7]§r §cMagicItem are not allowed in this world!",
+  "magicitem.usage.sell.success": "§7[§fMagicItem§7]§r §aYou have collected {%1} economy.",
+
+  "magicitem.commands.help": "§7------ MagicItem Help ------",
+  "magicitem.commands.reload.help": "§2/mi reload:§f Reload the configuration file",
+  "magicitem.commands.add.help": "§2/mi add <String: itemName> <String: itemId>:§f Add (create) a new MagicItem item",
+  "magicitem.commands.give.help": "§2/mi give <Player: player> <String: itemName> [Int: count] [Int: quality]:§f Give the specified MagicItem item to the player",
+  "magicitem.commands.show.help": "§2/mi show:§f Show the item in hand",
+  "magicitem.commands.sell.help": "§2/mi sell:§f Sell the MagicItem item in the backpack"
+}

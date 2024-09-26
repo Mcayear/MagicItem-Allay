@@ -2,29 +2,46 @@ package cn.mcayear.magicitem;
 
 import cn.mcayear.magicitem.command.MagicItemCommand;
 import cn.mcayear.magicitem.config.ItemsConfig;
+import cn.mcayear.magicitem.config.MainConfig;
+import cn.mcayear.magicitem.event.NormalEventListener;
+import cn.mcayear.magicitem.utils.UpdateBackupItem;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.allaymc.api.i18n.I18n;
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.registry.Registries;
+import org.allaymc.api.server.Server;
 
 @Slf4j
 public class MagicItemMain extends Plugin {
 
     @Getter
-    public static Plugin instance;
+    private static Plugin instance;
+    @Getter
+    private static I18n i18n;
+
+    public static MainConfig MAIN_CONFIG;
 
     @Override
     public void onLoad() {
         log.info("MagicItem loaded!");
-        //save Plugin Instance
+        // save Plugin Instance
         instance = this;
+        // register the plugin i18n
+        i18n = this.getPluginI18n();
+
+        // register the command of plugin
         Registries.COMMANDS.register(new MagicItemCommand());
+
+        // init the config of plugin
         ItemsConfig.init();
+        MAIN_CONFIG = new MainConfig();
     }
 
     @Override
     public void onEnable() {
         log.info("MagicItem enabled!");
+        Server.getInstance().getEventBus().registerListener(new NormalEventListener());
     }
 
     @Override
@@ -43,5 +60,7 @@ public class MagicItemMain extends Plugin {
         Registries.COMMANDS.unregister("mi");
         Registries.COMMANDS.register(new MagicItemCommand());
         ItemsConfig.init();
+        MAIN_CONFIG = new MainConfig();
+        // Server.getInstance().getOnlinePlayers().values().forEach(UpdateBackupItem::update);
     }
 }

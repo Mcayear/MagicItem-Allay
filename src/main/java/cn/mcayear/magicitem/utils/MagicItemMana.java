@@ -1,13 +1,17 @@
 package cn.mcayear.magicitem.utils;
 
 import cn.mcayear.magicitem.MagicItemMain;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class MagicItemMana {
     private Map<String, Integer> mana;
+
     public MagicItemMana(Map<String, Integer> mana) {
         this.mana = mana;
     }
@@ -17,7 +21,7 @@ public class MagicItemMana {
         Matcher matcher = pattern.matcher(str);
         StringBuilder sb = new StringBuilder();
 
-        while(matcher.find()) {
+        while (matcher.find()) {
             String replacement = String.valueOf(this.mana.get(matcher.group(1)));// 魔素值
             matcher.appendReplacement(sb, replacement);
         }
@@ -38,7 +42,7 @@ public class MagicItemMana {
                     try {
                         convertedMap.put(entry.getKey(), Integer.parseInt(valueStr));
                     } catch (NumberFormatException e) {
-                        MagicItemMain.getInstance().getPluginLogger().error("at "+name+" file, Value for key '" + entry.getKey() + "' cannot be converted to Integer: " + e.getMessage());
+                        log.error("at " + name + " file, Value for key '" + entry.getKey() + "' cannot be converted to Integer: " + e.getMessage());
                         // 根据情况决定是否继续循环或抛出异常等
                         // convertedMap.put(entry.getKey(), 0); // 如果决定赋予默认值0
                     }
@@ -46,7 +50,7 @@ public class MagicItemMana {
             }
         } catch (Exception e) {
             // 处理可能的其他异常
-            MagicItemMain.getInstance().getPluginLogger().error(name+" 文件无法读取`魔素`");
+            log.error(name + " 文件无法读取`魔素`");
             e.printStackTrace();
         }
         return convertedMap;

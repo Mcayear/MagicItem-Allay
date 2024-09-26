@@ -2,6 +2,7 @@ package cn.mcayear.magicitem.config;
 
 import cn.mcayear.magicitem.MagicItemMain;
 import cn.mcayear.magicitem.bean.ItemBean;
+import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.utils.config.Config;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+@Slf4j
 public class ItemsConfig {
 
     public static final HashMap<String, ItemBean> ITEMS_MAP = new HashMap<>();
@@ -21,7 +23,7 @@ public class ItemsConfig {
             try {
                 Files.createDirectories(itemsPath);
             } catch (IOException e) {
-                MagicItemMain.getInstance().getPluginLogger().error("无法创建 ./plugins/MagicItem/items 文件夹");
+                log.error("无法创建 ./plugins/MagicItem/items 文件夹");
                 return;
             }
         }
@@ -39,7 +41,7 @@ public class ItemsConfig {
                         ITEMS_MAP.put(fileName, new ItemBean(fileName, new Config(path.toFile(), Config.YAML)));
                     });
         } catch (IOException e) {
-            MagicItemMain.getInstance().getPluginLogger().error("加载 YAML 文件时出错: " + e.getMessage());
+            log.error("加载 YAML 文件时出错: " + e.getMessage());
         }
     }
 }

@@ -1,0 +1,26 @@
+showName: "§r§e狼毛§r"
+namespaceId: "minecraft:feather"
+aux: 0
+effect: [] # 获得药水
+groupEffect: [] # 群体药水
+effectRange: 5 # 药水范围
+thunder: false # 使用雷击
+opCmd: [] # OP指令
+playerCmd: [] # 以玩家身份执行
+lore: # 显示
+  - "§r§f[§b素材§f]§r            @quality"
+  - "§r§f强化衣服的主要材料"
+  - "§r§8§l一一一一一一一一一一"
+  - "§r§7血量值:§a {{血量值}}"
+  - "§r§8§l一一一一一一一一一一"
+  - "§r {(风)}"
+  - ""
+  - "§r {(秩序)}"
+consume: false # 使用消耗
+cooldown: 0 # 冷却时间，单位秒
+playerMsg: '' # 获得提示（仅玩家个人）
+broadcastMsg: '' # 全服提示
+enchantments: # 附魔列表
+  - "0:0"
+jobRestriction: "无" # 职业限制
+sellPrice: 0 # 回收价格

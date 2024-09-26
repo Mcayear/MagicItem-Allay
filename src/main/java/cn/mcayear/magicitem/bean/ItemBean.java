@@ -8,7 +8,6 @@ import org.allaymc.api.item.type.ItemTypeSafeGetter;
 import org.allaymc.api.item.type.ItemTypes;
 import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.config.Config;
-import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtMapBuilder;
 import org.cloudburstmc.nbt.NbtType;
 

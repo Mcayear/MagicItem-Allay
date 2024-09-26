@@ -1,0 +1,24 @@
+globalItemCooldown: false # 全局冷却（药水效果的），开启后所有物品均公用一个冷却计算
+itemDisplayCooldown: 15 # 展示手中物品的冷却，单位秒
+quality: # 品质，不同品质属性会被乘以不同的系数
+  list: # 名字
+  - 劣质
+  - 普通
+  - 优质
+  - 完美
+  - 传奇
+  p: # 概率，其合应为 1
+  - 0.3
+  - 0.4
+  - 0.15
+  - 0.1
+  - 0.04
+  - 0.01
+  m: # 系数
+  - 0.8
+  - 1
+  - 1.2
+  - 1.5
+  - 2
+restrictedWorlds: # 禁用 MagicItem 的世界
+  - zc
