@@ -29,12 +29,12 @@ public class MagicItemCommand extends SimpleCommand {
         tree.getRoot()
                 .key("help")
                 .exec(context -> {
-                    context.addOutput(getI18n().tr("magicitem.commands.help"));
-                    context.addOutput(getI18n().tr("magicitem.commands.reload.help"));
-                    context.addOutput(getI18n().tr("magicitem.commands.add.help"));
-                    context.addOutput(getI18n().tr("magicitem.commands.give.help"));
-                    context.addOutput(getI18n().tr("magicitem.commands.show.help"));
-                    context.addOutput(getI18n().tr("magicitem.commands.sell.help"));
+                    context.addOutput("magicitem:magicitem.commands.help");
+                    context.addOutput("magicitem:magicitem.commands.reload.help");
+                    context.addOutput("magicitem:magicitem.commands.add.help");
+                    context.addOutput("magicitem:magicitem.commands.give.help");
+                    context.addOutput("magicitem:magicitem.commands.show.help");
+                    context.addOutput("magicitem:magicitem.commands.sell.help");
                     return context.success();
 
                 });
@@ -73,7 +73,7 @@ public class MagicItemCommand extends SimpleCommand {
                     ItemStack showItem = player.getItemInHand();
                     if (!showItem.getCustomNBTContent().isEmpty()) {
                         Server.getInstance().getOnlinePlayers().values().forEach(p -> {
-                            p.sendTr("magicitem.usage.showItem", player.getOriginName(), showItem.getCustomName());
+                            p.sendTr("magicitem:magicitem.usage.showItem", player.getOriginName(), showItem.getCustomName());
                         });
                         return context.success();
                     }
@@ -81,7 +81,7 @@ public class MagicItemCommand extends SimpleCommand {
                         this.useTime.put(player.getUUID().hashCode(), time);
                     } else if ((time - this.useTime.get(player.getUUID().hashCode())) / 1000 < MAIN_CONFIG.getItemDisplayCooldown()) {
                         long seconds = MAIN_CONFIG.getItemDisplayCooldown() - ((time - this.useTime.get(player.getUUID().hashCode())) / 1000);
-                        context.addOutput("magicitem.usage.showItem.cooldown", seconds);
+                        context.addOutput("magicitem:magicitem.usage.showItem.cooldown", seconds);
                         return context.fail();
                     } else {
                         this.useTime.put(player.getUUID().hashCode(), time);
@@ -94,7 +94,7 @@ public class MagicItemCommand extends SimpleCommand {
                         if (showItem.getCount() > 1) {
                             itemName += "§r§f *" + showItem.getCount();
                         }
-                        p.sendTr("magicitem.usage.showItem", player.getOriginName(), itemName);
+                        p.sendTr("magicitem:magicitem.usage.showItem", player.getOriginName(), itemName);
                     });
                     return context.success();
                 }, SenderType.PLAYER);
@@ -118,7 +118,7 @@ public class MagicItemCommand extends SimpleCommand {
                             }
                         }
                     }
-                    context.addOutput("magicitem.usage.sell.success", total);
+                    context.addOutput("magicitem:magicitem.usage.sell.success", total);
                     return context.success();
                 }, SenderType.PLAYER);
     }
