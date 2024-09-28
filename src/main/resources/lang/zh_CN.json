@@ -1,15 +1,15 @@
 {
-  "magicitem:magicitem.usage.permission": "§c权限不足。",
-  "magicitem:magicitem.usage.cooldown": "§7[§f魔法物品§7] §a冷却中...剩余§e {%1}§a 秒",
-  "magicitem:magicitem.usage.showItem.cooldown": "§7[§f物品展示§7] §a冷却中...剩余§e {%1}§a 秒",
-  "magicitem:magicitem.usage.showItem": "§7[§f物品展示§7] §6玩家§a {%1} §6手里拿的是§r {%2}",
-  "magicitem:magicitem.usage.restrictedWorld": "§7[§f魔法物品§7]§r §c这个世界不允许使用魔法物品！",
-  "magicitem:magicitem.usage.sell.success": "§a回收完毕，获得 {%1} 元",
+  "magicitem:usage.permission": "§c权限不足。",
+  "magicitem:usage.cooldown": "§7[§f魔法物品§7] §a冷却中...剩余§e {%1}§a 秒",
+  "magicitem:usage.showItem.cooldown": "§7[§f物品展示§7] §a冷却中...剩余§e {%1}§a 秒",
+  "magicitem:usage.showItem": "§7[§f物品展示§7] §6玩家§a {%1} §6手里拿的是§r {%2}",
+  "magicitem:usage.restrictedWorld": "§7[§f魔法物品§7]§r §c这个世界不允许使用魔法物品！",
+  "magicitem:usage.sell.success": "§a回收完毕，获得 {%1} 元",
 
-  "magicitem:magicitem.commands.help": "§7------ MagicItem Help ------",
-  "magicitem:magicitem.commands.reload.help": "§2/mi reload:§f 重载配置文件",
-  "magicitem:magicitem.commands.add.help": "§2/mi add <String: itemName> <String: itemId>:§f 添加（创建）新的魔法物品",
-  "magicitem:magicitem.commands.give.help": "§2/mi give <Player: player> <String: itemName> [Int: count] [Int: quality]:§f 给予玩家指定的魔法物品",
-  "magicitem:magicitem.commands.show.help": "§2/mi show:§f 展示手中物品",
-  "magicitem:magicitem.commands.sell.help": "§2/mi sell:§f 出售背包的魔法物品"
+  "magicitem:commands.help": "§7------ MagicItem Help ------",
+  "magicitem:commands.reload.help": "§2/mi reload:§f 重载配置文件",
+  "magicitem:commands.add.help": "§2/mi add <String: itemName> <String: itemId>:§f 添加（创建）新的魔法物品",
+  "magicitem:commands.give.help": "§2/mi give <Player: player> <String: itemName> [Int: count] [Int: quality]:§f 给予玩家指定的魔法物品",
+  "magicitem:commands.show.help": "§2/mi show:§f 展示手中物品",
+  "magicitem:commands.sell.help": "§2/mi sell:§f 出售背包的魔法物品"
 }

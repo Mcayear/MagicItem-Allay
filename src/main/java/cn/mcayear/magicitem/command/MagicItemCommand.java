@@ -1,5 +1,7 @@
 package cn.mcayear.magicitem.command;
 
+import cn.mcayear.magicitem.MagicItemMain;
+import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.command.SenderType;
 import org.allaymc.api.command.SimpleCommand;
 import org.allaymc.api.command.tree.CommandTree;
@@ -7,15 +9,25 @@ import org.allaymc.api.container.FullContainerType;
 import org.allaymc.api.container.impl.PlayerInventoryContainer;
 import org.allaymc.api.entity.interfaces.EntityPlayer;
 import org.allaymc.api.item.ItemStack;
+import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.server.Server;
+import org.allaymc.api.utils.config.Config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import static cn.mcayear.magicitem.MagicItemMain.*;
 import static cn.mcayear.magicitem.config.ItemsConfig.ITEMS_MAP;
 import static org.allaymc.api.item.type.ItemTypes.WRITTEN_BOOK;
 
+@Slf4j
 public class MagicItemCommand extends SimpleCommand {
 
     private HashMap<Integer, Long> useTime = new HashMap<>();
@@ -29,15 +41,47 @@ public class MagicItemCommand extends SimpleCommand {
         tree.getRoot()
                 .key("help")
                 .exec(context -> {
-                    context.addOutput("magicitem:magicitem.commands.help");
-                    context.addOutput("magicitem:magicitem.commands.reload.help");
-                    context.addOutput("magicitem:magicitem.commands.add.help");
-                    context.addOutput("magicitem:magicitem.commands.give.help");
-                    context.addOutput("magicitem:magicitem.commands.show.help");
-                    context.addOutput("magicitem:magicitem.commands.sell.help");
+                    context.addOutput("magicitem:commands.help");
+                    context.addOutput("magicitem:commands.reload.help");
+                    context.addOutput("magicitem:commands.add.help");
+                    context.addOutput("magicitem:commands.give.help");
+                    context.addOutput("magicitem:commands.show.help");
+                    context.addOutput("magicitem:commands.sell.help");
                     return context.success();
-
                 });
+        tree.getRoot()
+                .key("add")
+                .str("name")
+                .itemType("itemName")
+                .exec(context -> {
+                    var name = context.getResult(1);
+                    ItemType<?> itemType = context.getResult(2);
+                    Path itemPath = Paths.get(MagicItemMain.getInstance().getPluginContainer().dataFolder().toString(), "items", name+".yml");
+                    if (Files.exists(itemPath)) {
+                        context.addError("文件已经存在", name);
+                        return context.fail();
+                    }
+
+                    try (InputStream in = MagicItemMain.class.getClassLoader().getResourceAsStream("config.yml")) {
+                        if (in == null) {
+                            throw new IOException("默认配置文件未找到");
+                        }
+                        Files.copy(in, itemPath, StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        log.error("保存默认配置文件时出错: " + e.getMessage(), e);
+                    }
+
+                    var cfg = new Config(itemPath.toFile(), Config.YAML);
+                    LinkedHashMap<String, Object> cfgSection = new LinkedHashMap<>(cfg.getAll());
+                    cfgSection.put("showName", name);
+                    cfgSection.put("namespaceId", itemType.getIdentifier().namespace());
+                    cfg.setAll(cfgSection);
+                    cfg.save();
+
+                    context.addOutput("创建成功", name);
+                    return context.success();
+                });
+
         tree.getRoot()
                 .key("give")
                 .playerTarget("player")
@@ -73,7 +117,7 @@ public class MagicItemCommand extends SimpleCommand {
                     ItemStack showItem = player.getItemInHand();
                     if (!showItem.getCustomNBTContent().isEmpty()) {
                         Server.getInstance().getOnlinePlayers().values().forEach(p -> {
-                            p.sendTr("magicitem:magicitem.usage.showItem", player.getOriginName(), showItem.getCustomName());
+                            p.sendTr("magicitem:usage.showItem", player.getOriginName(), showItem.getCustomName());
                         });
                         return context.success();
                     }
@@ -81,7 +125,7 @@ public class MagicItemCommand extends SimpleCommand {
                         this.useTime.put(player.getUUID().hashCode(), time);
                     } else if ((time - this.useTime.get(player.getUUID().hashCode())) / 1000 < MAIN_CONFIG.getItemDisplayCooldown()) {
                         long seconds = MAIN_CONFIG.getItemDisplayCooldown() - ((time - this.useTime.get(player.getUUID().hashCode())) / 1000);
-                        context.addOutput("magicitem:magicitem.usage.showItem.cooldown", seconds);
+                        context.addOutput("magicitem:usage.showItem.cooldown", seconds);
                         return context.fail();
                     } else {
                         this.useTime.put(player.getUUID().hashCode(), time);
@@ -94,7 +138,7 @@ public class MagicItemCommand extends SimpleCommand {
                         if (showItem.getCount() > 1) {
                             itemName += "§r§f *" + showItem.getCount();
                         }
-                        p.sendTr("magicitem:magicitem.usage.showItem", player.getOriginName(), itemName);
+                        p.sendTr("magicitem:usage.showItem", player.getOriginName(), itemName);
                     });
                     return context.success();
                 }, SenderType.PLAYER);
@@ -118,7 +162,7 @@ public class MagicItemCommand extends SimpleCommand {
                             }
                         }
                     }
-                    context.addOutput("magicitem:magicitem.usage.sell.success", total);
+                    context.addOutput("magicitem:usage.sell.success", total);
                     return context.success();
                 }, SenderType.PLAYER);
     }

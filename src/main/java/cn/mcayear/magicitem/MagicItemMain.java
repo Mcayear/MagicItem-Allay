@@ -4,7 +4,6 @@ import cn.mcayear.magicitem.command.MagicItemCommand;
 import cn.mcayear.magicitem.config.ItemsConfig;
 import cn.mcayear.magicitem.config.MainConfig;
 import cn.mcayear.magicitem.event.NormalEventListener;
-import cn.mcayear.magicitem.utils.UpdateBackupItem;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.i18n.I18n;

@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
@@ -31,21 +33,21 @@ public class MainConfig {
     private List<String> restrictedWorlds;
 
     public MainConfig() {
-        File file = new File(MagicItemMain.getInstance().getPluginContainer().dataFolder().toFile(), "config.yml");
+        Path filePath = Paths.get(MagicItemMain.getInstance().getPluginContainer().dataFolder().toString(), "config.yml");
 
-        if (!file.exists()) {
+        if (Files.notExists(filePath)) {
             try (InputStream in = MagicItemMain.class.getClassLoader().getResourceAsStream("config.yml")) {
                 if (in == null) {
                     throw new IOException("默认配置文件未找到");
                 }
-                Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                file = new File(MagicItemMain.getInstance().getPluginContainer().dataFolder().toFile(), "config.yml");
+                Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
+
             } catch (IOException e) {
                 log.error("保存默认配置文件时出错: " + e.getMessage(), e);
             }
         }
 
-        config = new Config(file, Config.YAML);
+        config = new Config(filePath.toFile(), Config.YAML);
 
         globalItemCooldown = config.getBoolean("globalItemCooldown", false);
         itemDisplayCooldown = config.getInt("itemDisplayCooldown", 15);
