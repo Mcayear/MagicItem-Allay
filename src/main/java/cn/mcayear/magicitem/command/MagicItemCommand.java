@@ -30,27 +30,27 @@ import static org.allaymc.api.item.type.ItemTypes.WRITTEN_BOOK;
 @Slf4j
 public class MagicItemCommand extends SimpleCommand {
 
-    private HashMap<Integer, Long> useTime = new HashMap<>();
+    private final HashMap<Integer, Long> useTime = new HashMap<>();
 
     public MagicItemCommand() {
-        super("mi", "魔法物品");
+        super("mi", "magicitem:commands.description");
     }
 
     @Override
     public void prepareCommandTree(CommandTree tree) {
         tree.getRoot()
                 .key("help")
-                .exec(context -> {
+                .exec((context, sender) -> {
                     context.addOutput("magicitem:commands.help");
                     context.addOutput("magicitem:commands.reload.help");
-                    context.addOutput("magicitem:commands.add.help");
+                    context.addOutput("magicitem:commands.create.help");
                     context.addOutput("magicitem:commands.give.help");
                     context.addOutput("magicitem:commands.show.help");
                     context.addOutput("magicitem:commands.sell.help");
                     return context.success();
-                });
+                }, SenderType.ANY);
         tree.getRoot()
-                .key("add")
+                .key("create")
                 .str("name")
                 .itemType("itemName")
                 .exec(context -> {
@@ -58,17 +58,17 @@ public class MagicItemCommand extends SimpleCommand {
                     ItemType<?> itemType = context.getResult(2);
                     Path itemPath = Paths.get(MagicItemMain.getInstance().getPluginContainer().dataFolder().toString(), "items", name+".yml");
                     if (Files.exists(itemPath)) {
-                        context.addError("文件已经存在", name);
+                        context.addError("magicitem:commands.create.error", name);
                         return context.fail();
                     }
 
-                    try (InputStream in = MagicItemMain.class.getClassLoader().getResourceAsStream("config.yml")) {
+                    try (InputStream in = MagicItemMain.class.getClassLoader().getResourceAsStream("items/example.yml")) {
                         if (in == null) {
-                            throw new IOException("默认配置文件未找到");
+                            throw new IOException("资源 items/example.yml 未找到");
                         }
                         Files.copy(in, itemPath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        log.error("保存默认配置文件时出错: " + e.getMessage(), e);
+                        log.error("保存默认配置文件时出错: {}", e.getMessage(), e);
                     }
 
                     var cfg = new Config(itemPath.toFile(), Config.YAML);
@@ -78,10 +78,9 @@ public class MagicItemCommand extends SimpleCommand {
                     cfg.setAll(cfgSection);
                     cfg.save();
 
-                    context.addOutput("创建成功", name);
+                    context.addOutput("magicitem:commands.create.success", name);
                     return context.success();
                 });
-
         tree.getRoot()
                 .key("give")
                 .playerTarget("player")
@@ -98,7 +97,7 @@ public class MagicItemCommand extends SimpleCommand {
                     }
                     String itemName = context.getResult(2);
                     if (!ITEMS_MAP.containsKey(itemName)) {
-                        context.addError("不存在物品 " + itemName);
+                        context.addError("magicitem:commands.give.error ", itemName);
                         return context.fail();
                     }
                     int count = context.getResult(3);
@@ -107,7 +106,7 @@ public class MagicItemCommand extends SimpleCommand {
                     itemStack.setCount(count);
 
                     players.forEach(p -> p.getContainer(FullContainerType.PLAYER_INVENTORY).tryAddItem(itemStack));
-                    context.addOutput("成功给予物品");
+                    context.addOutput("magicitem:commands.give.success", itemName);
                     return context.success();
                 });
         tree.getRoot()
@@ -116,9 +115,8 @@ public class MagicItemCommand extends SimpleCommand {
                     long time = System.currentTimeMillis();
                     ItemStack showItem = player.getItemInHand();
                     if (!showItem.getCustomNBTContent().isEmpty()) {
-                        Server.getInstance().getOnlinePlayers().values().forEach(p -> {
-                            p.sendTr("magicitem:usage.showItem", player.getOriginName(), showItem.getCustomName());
-                        });
+                        Server.getInstance().getOnlinePlayers().values()
+                                .forEach(p -> p.sendTr("magicitem:usage.showItem", player.getOriginName(), showItem.getCustomName()));
                         return context.success();
                     }
                     if (!this.useTime.containsKey(player.getUUID().hashCode())) {

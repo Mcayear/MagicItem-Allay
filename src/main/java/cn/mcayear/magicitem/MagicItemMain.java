@@ -6,7 +6,6 @@ import cn.mcayear.magicitem.config.MainConfig;
 import cn.mcayear.magicitem.event.NormalEventListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.allaymc.api.i18n.I18n;
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.registry.Registries;
 import org.allaymc.api.server.Server;
@@ -16,8 +15,6 @@ public class MagicItemMain extends Plugin {
 
     @Getter
     private static Plugin instance;
-    @Getter
-    private static I18n i18n;
 
     public static MainConfig MAIN_CONFIG;
 
@@ -26,8 +23,6 @@ public class MagicItemMain extends Plugin {
         log.info("MagicItem loaded!");
         // save Plugin Instance
         instance = this;
-        // register the plugin i18n
-        i18n = this.getPluginI18n();
 
         // register the command of plugin
         Registries.COMMANDS.register(new MagicItemCommand());
